@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:zoomato/bloc/bloc_provider.dart';
+import 'package:zoomato/bloc/cart_bloc.dart';
 import 'package:zoomato/bloc/location_bloc.dart';
 import 'package:zoomato/models/restaurant.dart';
 
@@ -12,7 +13,7 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    CartBloc cartBloc = BlocProvider.of<CartBloc>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -98,12 +99,35 @@ class RestaurantDetailScreen extends StatelessWidget {
                           color: Colors.red[100],
                           child: Row(
                             children: [
-                              AddItemToCart(text: "-",onTap: (){print("decrease");},),
+                              AddItemToCart(text: "-",
+                                onTap: (){
+                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id, false);
+                                },
+                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 3),
-                                child: Text("Add",style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                                child: StreamBuilder<Map<String,int>>(
+                                  stream: cartBloc.cartStream,
+                                  builder: (context, snapshot) {
+                                    Map<String,int> cartMap = snapshot.data;
+                                    String text;
+                                    if( cartMap == null || cartMap.isEmpty){
+                                      text = "0";
+                                    } else{
+                                      text = cartBloc.restaurantId == restaurant.id && cartBloc.cartItems.containsKey(restaurant.getCuisins[index])
+                                          ? cartBloc.cartItems[restaurant.getCuisins[index]].toString()
+                                          : "0" ;
+                                    }
+
+                                    return Text(text,style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),);
+                                  }
+                                ),
                               ),
-                              AddItemToCart(text: "+",onTap: (){print("increase");},),
+                              AddItemToCart(text: "+",
+                                onTap: (){
+                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id, true);
+                                },
+                              ),
                             ],
                           ),
                         ),
