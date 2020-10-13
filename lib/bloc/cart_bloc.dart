@@ -19,11 +19,11 @@ class CartBloc extends Bloc {
       restaurantId = rId;
       finalCartItems(item,increment);
     }
-    if(restaurantId != rId) {
+    else if(restaurantId != rId) {
       _cartItems = {};
       finalCartItems(item,increment);
     }
-    if(restaurantId == rId) {
+    else {
       finalCartItems(item, increment);
     }
   }
