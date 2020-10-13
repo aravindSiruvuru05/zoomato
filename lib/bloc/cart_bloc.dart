@@ -30,11 +30,11 @@ class CartBloc extends Bloc {
 
   finalCartItems(String item,bool increment){
     if(increment) {
-      _cartItems.containsKey(item) ? _cartItems[item] += 1 : _cartItems[item] = 0 ;
+      _cartItems.containsKey(item) ? _cartItems[item] += 1 : _cartItems[item] = 1 ;
     }else {
       _cartItems[item] = _cartItems[item] == 0 ? 0 : _cartItems[item]--;
     }
-
+    print(cartItems);
     _cartItemsStreamController.sink.add(_cartItems);
   }
 

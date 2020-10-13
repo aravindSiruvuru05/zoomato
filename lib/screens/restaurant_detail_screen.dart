@@ -108,10 +108,11 @@ class RestaurantDetailScreen extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(horizontal: 3),
                                 child: StreamBuilder<Map<String,int>>(
                                   stream: cartBloc.cartStream,
+                                  initialData: cartBloc.cartItems,
                                   builder: (context, snapshot) {
                                     Map<String,int> cartMap = snapshot.data;
                                     String text;
-                                    if( cartMap == null || cartMap.isEmpty){
+                                    if(cartMap.isEmpty){
                                       text = "0";
                                     } else{
                                       text = cartBloc.restaurantId == restaurant.id && cartBloc.cartItems.containsKey(restaurant.getCuisins[index])
