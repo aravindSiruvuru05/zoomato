@@ -101,7 +101,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                             children: [
                               AddItemToCart(text: "-",
                                 onTap: (){
-                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id, false);
+                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id,restaurant.name, false);
                                 },
                               ),
                               Padding(
@@ -126,7 +126,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                               ),
                               AddItemToCart(text: "+",
                                 onTap: (){
-                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id, true);
+                                  cartBloc.modifyCartItems(restaurant.getCuisins[index], restaurant.id, restaurant.name, true);
                                 },
                               ),
                             ],

@@ -9,18 +9,22 @@ class CartBloc extends Bloc {
 
   Map<String,int> _cartItems = {};
 
+  String restaurantName;
+
   Map<String,int> get cartItems => _cartItems;
 
   final _cartItemsStreamController = StreamController<Map<String,int>>.broadcast();
   Stream<Map<String,int>> get cartStream => _cartItemsStreamController.stream;
 
-  modifyCartItems(String item, String rId,bool increment){
+  modifyCartItems(String item, String rId, String rName,bool increment){
     if(restaurantId == null) {
       restaurantId = rId;
+      restaurantName = rName;
       finalCartItems(item,increment);
     }
     else if(restaurantId != rId) {
       restaurantId = rId;
+      restaurantName = rName;
       _cartItems = {};
       finalCartItems(item,increment);
     }
@@ -33,7 +37,9 @@ class CartBloc extends Bloc {
     if(increment) {
       _cartItems.containsKey(item) ? _cartItems[item] += 1 : _cartItems[item] = 1 ;
     }else {
-      _cartItems[item] = _cartItems[item] == 0 ? 0 : _cartItems[item]--;
+      _cartItems[item] == 1
+          ? _cartItems.remove(item)
+          : _cartItems[item] -= 1;
     }
     print(cartItems);
     _cartItemsStreamController.sink.add(_cartItems);
